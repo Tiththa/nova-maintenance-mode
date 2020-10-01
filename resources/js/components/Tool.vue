@@ -18,13 +18,13 @@
                 <div class="flex border-b border-40">
                     <div class="w-1/4 py-4"><h4 class="font-normal text-80">{{ __('Message') }}</h4></div>
                     <div class="w-3/4 py-4">
-                        <input v-model="message" type="text" name="message" class="form-control form-input form-input-bordered w-1/2 " placeholder="{{ __('A message for your users') }}">
+                        <input v-model="message" type="text" name="message" class="form-control form-input form-input-bordered w-1/2 " :placeholder="__('A message for your users')">
                     </div>
                 </div>
                 <div class="flex border-b border-40">
-                    <div class="w-1/4 py-4"><h4 class="font-normal text-80">{{ __('Retry Time') }} <span class="text-sm">(secs)</span></h4></div>
+                    <div class="w-1/4 py-4"><h4 class="font-normal text-80">{{ __('Retry Time') }} <span class="text-sm">{{ __('(secs)') }}</span></h4></div>
                     <div class="w-3/4 py-4">
-                        <input v-model="retry" type="number" name="retry" class="form-control form-input form-input-bordered w-1/4" placeholder="{{ __('Set the Retry-After header') }}"  min=0 max=9999>
+                        <input v-model="retry" type="number" name="retry" class="form-control form-input form-input-bordered w-1/4" :placeholder="__('Set the Retry-After header')"  min=0 max=9999>
                     </div>
                 </div>
                 <div class="flex border-b border-40">
