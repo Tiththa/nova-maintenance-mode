@@ -12,7 +12,8 @@ class MaintenanceMode
      *
      * @return void
      */
-    public static function up(){
+    public static function up()
+    {
         @unlink(storage_path('framework/down'));
         return;
     }
@@ -23,32 +24,16 @@ class MaintenanceMode
      * @param Request $request
      * @return void
      */
-    public static function down($request){
-
-        $props = $request->only(['message', 'retry', 'allow','include_current_ip']);
-
-        $retry = data_get($props, 'retry');
+    public static function down($request)
+    {
+        $retry = $request->get('retry');
 
         $retry_seconds = is_numeric($retry) && $retry > 0 ? (int) $retry : null;
 
-        $allowed_ips = [];
-
-        if(!is_null(data_get($props, 'allow'))){
-            $allowed_ip_list = str_replace(' ','',data_get($props, 'allow'));
-            $allowed_ips = explode(',', $allowed_ip_list);
-        }
-
-        if(!is_null(data_get($props, 'include_current_ip'))){
-            if(data_get($props, 'include_current_ip')){
-                $allowed_ips[] = $request->ip();
-            }
-        }
-
         $payload = [
             'time' => now()->timestamp,
-            'message' => data_get($props, 'message'),
             'retry' => $retry_seconds,
-            'allowed' => array_unique($allowed_ips),
+            'secret' => Str::uuid(),
         ];
 
         file_put_contents(
@@ -56,8 +41,6 @@ class MaintenanceMode
             json_encode($payload, JSON_PRETTY_PRINT)
         );
 
-        return;
+        return $payload;
     }
-
-
 }
