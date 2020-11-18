@@ -5,6 +5,7 @@ namespace Davidpiesse\NovaMaintenanceMode;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Davidpiesse\NovaMaintenanceMode\Http\Middleware\Authorize;
 
@@ -25,7 +26,9 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(function (ServingNova $event) {
             Nova::provideToScript([
-                'currentlyInMaintenanceMode' => app()->isDownForMaintenance()
+                'currentlyInMaintenanceMode' => app()->isDownForMaintenance(),
+                'maintenanceModeSecret' => Cache::get('maintenance_mode_secret'),
+                'rootUrl' => config('app.url'),
             ]);
         });
     }
