@@ -2,6 +2,8 @@
 
 namespace Davidpiesse\NovaMaintenanceMode;
 
+use Illuminate\Support\Str;
+
 /**
  * Class to wrap Artisan Maintenance mode logic
  */
