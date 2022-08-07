@@ -2,6 +2,7 @@
 
 namespace Davidpiesse\NovaMaintenanceMode;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 /**
@@ -16,8 +17,7 @@ class MaintenanceMode
      */
     public static function up()
     {
-        @unlink(storage_path('framework/down'));
-        return;
+        Artisan::call('up');
     }
 
     /**
@@ -28,21 +28,15 @@ class MaintenanceMode
      */
     public static function down($request)
     {
-        $retry = $request->get('retry');
+        $secret = (string) Str::uuid();
 
-        $retry_seconds = is_numeric($retry) && $retry > 0 ? (int) $retry : null;
+        Artisan::call('down', [
+            '--refresh' => 15,
+            '--secret' => $secret
+        ]);
 
-        $payload = [
-            'time' => now()->timestamp,
-            'retry' => $retry_seconds,
-            'secret' => Str::uuid(),
+        return [
+            'secret' => $secret
         ];
-
-        file_put_contents(
-            storage_path('framework/down'),
-            json_encode($payload, JSON_PRETTY_PRINT)
-        );
-
-        return $payload;
     }
 }
