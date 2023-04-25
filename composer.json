@@ -1,5 +1,5 @@
 {
-    "name": "davidpiesse/nova-maintenance-mode",
+    "name": "tiththa/nova-maintenance-mode",
     "description": "Enable and disable Maintenance Mode from within Laravel Nova",
     "keywords": [
         "laravel",
